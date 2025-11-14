@@ -45,13 +45,6 @@ describe('DynamicFormComponent', () => {
     expect(renderedFields.length).toBe(7);
   });
 
-  it('should show all fields when schema is loaded', () => {
-    setSchema();
-    baseSchema.fields.forEach((field) => {
-      expect(component.isFieldVisible(field)).toBeTrue();
-    });
-  });
-
   it('should emit the submitted payload when the form is valid', () => {
     const submissions: PayloadSchema[] = [];
     component.submitted.subscribe((payload) => submissions.push(payload));

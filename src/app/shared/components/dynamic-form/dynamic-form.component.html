@@ -82,10 +82,12 @@
           </div>
         
       }
-
-      <button class="submit" type="submit">
-        {{ schema.submitLabel ?? 'Submit' }}
-      </button>
+      <div>
+        <button class="submit" type="submit">
+          {{ schema.submitLabel ?? 'Submit' }}
+        </button>
+        <button type="submit" class="submit reset" (click)="resetForm()">Reset Form</button>
+      </div>
     </form>
   </section>
 } @else {

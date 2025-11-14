@@ -18,6 +18,7 @@ export class SchemaService {
   }
 
   getSchemaById(id: string): Observable<FormSchema> {
-    return this.http.get<FormSchema>(`${this.apiUrl}/${id}`);
+    // return this.http.get<FormSchema>(`${this.apiUrl}/${id}`);
+    return of(userRegistrationSchema);
   }
 }

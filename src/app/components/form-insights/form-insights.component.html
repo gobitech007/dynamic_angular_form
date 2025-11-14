@@ -10,36 +10,32 @@
     </div>
   } @else {
     <aside class="sidebar">
-      <h2>Schemas</h2>
-
-      <div class="schema-list">
-        @for (schema of schemaList(); track schema.id; let i = $index) {
-          <button
-            type="button"
-            class="schema-card"
-            [class.active]="activeSchemaIndex() === i"
-            (click)="selectSchema(i)"
-          >
-            <div class="schema-card__title">{{ schema.label }}</div>
-            <p>{{ schema.summary }}</p>
-          </button>
-        }
+      <h2>Schemas List</h2>
+      <div class="schema-list form-field">
+        <select #selectRef id="schemaList" (change)="selectSchema(selectRef.selectedIndex)">
+          @for (schema of schemaList(); track schema.id; let i = $index) {
+            <option
+              [value]="schema.id"
+              [selected]="activeSchemaIndex() === i"
+            >
+              {{ schema.label }}
+              {{ schema.summary }}
+            </option>
+          }
+        </select>
       </div>
-
       <div class="submission">
         <div class="submission__header">
-          <h3>Submitted payload</h3>
-          <span class="badge">{{ lastSubmission() ? 'Latest' : 'Idle' }}</span>
+          <h3>Payload</h3>
+          <button type="submit" class="submit reset" (click)="resetForm()">Reset</button>
         </div>
-
         @if (lastSubmission(); as payload) {
           <pre class="submission__output">{{ payload | json }}</pre>
         } @else {
-          <p class="muted">Fill out a form and submit to preview the emitted values.</p>
+          <p class="muted">Fill out the form and submit to preview the Payload.</p>
         }
       </div>
     </aside>
-
     <main class="form-area">
       <app-dynamic-form [schema]="activeSchema()" (submitted)="onHandleSubmit($event)" />
     </main>

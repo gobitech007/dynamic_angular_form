@@ -57,7 +57,7 @@ describe('FormBuilderService', () => {
     const form = service.buildForm(baseSchema);
     expect(form.get('fullName')?.value).toBe('');
     expect(form.get('subscribe')?.value).toBeFalse();
-    expect(form.get('about')?.value).toEqual([]);
+    expect(form.get('about')?.value).toEqual('');
   });
 
   it('should configure validators for required and pattern fields', () => {

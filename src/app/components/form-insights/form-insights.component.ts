@@ -29,6 +29,9 @@ export class FormInsightsComponent implements OnInit {
     this.loadSchemas();
   }
 
+  /**
+   * Load schemas from the SchemaService.
+   */
   private loadSchemas(): void {
     this.isLoading.set(true);
     this.error.set(null);
@@ -37,13 +40,13 @@ export class FormInsightsComponent implements OnInit {
         const examples = schemas.map((schema, index) => ({
           id: schema.title.toLowerCase().replace(/\s+/g, '-'),
           label: schema.title,
-          summary: schema.description || 'Dynamic form schema',
+          summary: schema.description || '',
           schema,
         }));
+        console.log('Fetched schemas', examples);
         this.schemaList.set(examples);
         this.activeSchemaIndex.set(0);
         this.isLoading.set(false);
-        console.log('Schemas loaded successfully', examples);
       },
       error: (err) => {
         console.error('Failed to load schemas', err);
@@ -52,14 +55,21 @@ export class FormInsightsComponent implements OnInit {
       },
     });
   }
-
-  protected selectSchema(index: number): void {
+  public selectSchema(index: number): void {
     this.activeSchemaIndex.set(index);
     this.lastSubmission.set(null);
   }
-
+  /**
+   * 
+   * @param payload returns a final dynamic form values
+   */
   protected onHandleSubmit(payload: PayloadSchema): void {
     console.log('Dynamic form submission', payload);
     this.lastSubmission.set(payload);
+  }
+
+  public resetForm(): void {
+    this.lastSubmission.set(null);
+    this.activeSchemaIndex.set(0);
   }
 }

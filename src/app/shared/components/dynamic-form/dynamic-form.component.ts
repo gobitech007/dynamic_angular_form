@@ -62,6 +62,10 @@ export class DynamicFormComponent implements OnChanges {
     return 'Invalid value';
   }
 
+  /**
+   * 
+   * @returns form submission validation and emit payload
+   */
   public onSubmit(): void {
     if (!this.form) {
       return;
@@ -74,6 +78,11 @@ export class DynamicFormComponent implements OnChanges {
 
     const payload = this.form.getRawValue() as PayloadSchema;
     this.submitted.emit(payload);
+  }
+  public resetForm(): void {
+    if (this.form) {
+      this.form.reset();
+    }
   }
 }
 

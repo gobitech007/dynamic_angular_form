@@ -116,6 +116,6 @@ export const employeeRegistrationSchema: FormSchema = {
       name: 'about',
       type: 'textarea',
       placeholder: 'Tell us about yourself...',
-    },
+    }
   ],
 };
