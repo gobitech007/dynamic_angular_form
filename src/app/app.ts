@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, Component, OnInit, signal } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, OnInit } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { HeaderComponent, FooterComponent } from './shared/components';
 import { RouterModule } from '@angular/router';
