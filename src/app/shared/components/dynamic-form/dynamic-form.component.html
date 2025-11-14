@@ -1,0 +1,98 @@
+@if (schema && form) {
+  <section class="dynamic-form">
+    <header class="form-header">
+      <h2>{{ schema.title }}</h2>
+      @if (schema.description) {
+        <p class="description">
+          {{ schema.description }}
+        </p>
+      }
+    </header>
+
+    <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      @for (field of schema.fields; track trackByField($index, field)) {
+          <div class="form-field" [class.invalid]="getErrorMessage(field)">
+            @if (field?.labelVisible ?? true) {
+              <label [attr.for]="field.name">
+                {{ field.label }}
+                @if (field.required) {
+                  <span class="required">*</span>
+                }
+              </label>
+            }
+
+            @switch (field.type) {
+              @case ('text') {
+                <input
+                  [id]="field.name"
+                  type="text"
+                  [formControlName]="field.name"
+                  [placeholder]="field.placeholder ?? ''"
+                  [readonly]="field.readonly ?? null"
+                />
+              }
+              @case ('textarea') {
+                <textarea
+                  [id]="field.name"
+                  rows="4"
+                  [formControlName]="field.name"
+                  [placeholder]="field.placeholder ?? ''"
+                  [readonly]="field.readonly ?? null"  
+                ></textarea>
+              }
+              @case ('date') {
+                <input
+                  [id]="field.name"
+                  type="date"
+                  [formControlName]="field.name"
+                />
+              }
+              @case ('dropdown') {
+                <select [id]="field.name" [formControlName]="field.name">
+                  <option value="">Select {{ field.label }}</option>
+                  @for (option of field.options ?? []; track option) {
+                    <option [value]="option">{{ option }}</option>
+                  }
+                </select>
+              }
+              @case ('multiselect') {
+                <select
+                  [id]="field.name"
+                  multiple
+                  [formControlName]="field.name"
+                >
+                  @for (option of field.options ?? []; track option) {
+                    <option [value]="option" [selected]="form.get(field.name)?.value?.includes(option)">{{ option }}</option>
+                  }
+                </select>
+              }
+              @case ('checkbox') {
+                <label class="checkbox-wrapper">
+                  <input type="checkbox" [id]="field.name" [formControlName]="field.name" />
+                  <span>{{ field.label }}</span>
+                </label>
+              }
+            }
+
+            @if (field.helperText) {
+              <small class="helper">{{ field.helperText }}</small>
+            }
+
+            @if (getErrorMessage(field); as error) {
+              <small class="error">{{ error }}</small>
+            }
+          </div>        
+      }
+      <div class="submitWrapper">
+        <button class="submit" type="submit">
+          {{ schema.submitLabel ?? 'Submit' }}
+        </button>
+        <button type="submit" class="submit reset" (click)="resetForm()">Reset Form</button>
+      </div>
+    </form>
+  </section>
+} @else {
+  <p class="empty-state">No schema selected.</p>
+}
+
+

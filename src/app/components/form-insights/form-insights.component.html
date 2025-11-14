@@ -1,0 +1,43 @@
+
+<section class="workspace">
+  @if (isLoading()) {
+    <div class="loading-container">
+      <p>Loading schemas...</p>
+    </div>
+  } @else if (error()) {
+    <div class="error-container">
+      <p class="error-message">{{ error() }}</p>
+    </div>
+  } @else {
+    <aside class="sidebar">
+      <h2>Schemas List</h2>
+      <div class="schema-list form-field">
+        <select #selectRef id="schemaList" (change)="selectSchema(selectRef.selectedIndex)">
+          @for (schema of schemaList(); track schema.id; let i = $index) {
+            <option
+              [value]="schema.id"
+              [selected]="activeSchemaIndex() === i"
+            >
+              {{ schema.label }}
+              {{ schema.summary }}
+            </option>
+          }
+        </select>
+      </div>
+      <div class="submission">
+        <div class="submission__header">
+          <h3>Payload</h3>
+          <button type="submit" class="submit reset" (click)="resetForm()">Reset</button>
+        </div>
+        @if (lastSubmission(); as payload) {
+          <pre class="submission__output">{{ payload | json }}</pre>
+        } @else {
+          <p class="muted">Fill out the form and submit to preview the Payload.</p>
+        }
+      </div>
+    </aside>
+    <main class="form-area">
+      <app-dynamic-form [schema]="activeSchema()" (submitted)="onHandleSubmit($event)" />
+    </main>
+  }
+</section>
