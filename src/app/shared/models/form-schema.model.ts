@@ -1,10 +1,5 @@
 export type FieldType = 'text' | 'textarea' | 'date' | 'dropdown' | 'multiselect' | 'checkbox';
 
-export interface FieldVisibilityRule {
-  field: string;
-  equals: unknown;
-}
-
 export interface FieldValidation {
   required?: boolean;
   pattern?: string;
@@ -24,7 +19,6 @@ export interface FormField {
   readonly?: boolean;
   disabled?: boolean;
   hidden?: boolean;
-  visibleWhen?: FieldVisibilityRule;
   labelVisible?: boolean;
 }
 

@@ -34,28 +34,6 @@ export class DynamicFormComponent implements OnChanges {
   trackByField(_: number, field: FormField) {
     return field.name;
   }
-
-  /**
-   * Check whether a field should be displayed based on visibility rules.
-   *
-   * @param field Field to check.
-   */
-  isFieldVisible(field: FormField): boolean {
-    if (field.hidden) {
-      return false;
-    }
-
-    if (!field.visibleWhen || !this.form) {
-      return true;
-    }
-
-    const controllingValue = this.form.get(field.visibleWhen.field)?.value;
-    if (Array.isArray(controllingValue)) {
-      return controllingValue.includes(field.visibleWhen.equals);
-    }
-
-    return controllingValue === field.visibleWhen.equals;
-  }
   
   /**
    * 

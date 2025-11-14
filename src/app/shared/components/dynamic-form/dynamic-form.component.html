@@ -11,7 +11,6 @@
 
     <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
       @for (field of schema.fields; track trackByField($index, field)) {
-        @if (isFieldVisible(field)) {
           <div class="form-field" [class.invalid]="getErrorMessage(field)">
             <label [attr.for]="field.name" [style.display]="(field?.labelVisible ?? true) ? 'block' : 'none'">
               {{ field.label }}
@@ -81,7 +80,7 @@
               <small class="error">{{ error }}</small>
             }
           </div>
-        }
+        
       }
 
       <button class="submit" type="submit">

@@ -28,10 +28,9 @@ const baseSchema: FormSchema = {
       type: 'checkbox',
     },
     {
-      name: 'tags',
-      label: 'Tags',
-      type: 'multiselect',
-      options: ['one', 'two'],
+      name: 'about',
+      label: 'About',
+      type: 'textarea'
     },
   ],
 };
@@ -51,14 +50,14 @@ describe('FormBuilderService', () => {
     expect(form.contains('fullName')).toBeTrue();
     expect(form.contains('email')).toBeTrue();
     expect(form.contains('subscribe')).toBeTrue();
-    expect(form.contains('tags')).toBeTrue();
+    expect(form.contains('about')).toBeTrue();
   });
 
   it('should apply default values based on field type', () => {
     const form = service.buildForm(baseSchema);
     expect(form.get('fullName')?.value).toBe('');
     expect(form.get('subscribe')?.value).toBeFalse();
-    expect(form.get('tags')?.value).toEqual([]);
+    expect(form.get('about')?.value).toEqual([]);
   });
 
   it('should configure validators for required and pattern fields', () => {

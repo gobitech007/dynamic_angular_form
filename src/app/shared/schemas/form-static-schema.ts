@@ -68,14 +68,14 @@ export const employeeRegistrationSchema: FormSchema = {
       label: 'Full Name',
       name: 'fullName',
       type: 'text',
-      placeholder: 'Gobinath Samuvel',
+      placeholder: 'S Gobinath',
       required: true,
     },
     {
       label: 'Email',
       name: 'email',
       type: 'text',
-      placeholder: 'gsd@sample.com',
+      placeholder: 'ddsg@sample.com',
       required: true,
       validation: {
         pattern: '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$',
