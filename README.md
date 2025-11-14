@@ -1,59 +1,58 @@
-# Angularapp
+# Dynamic Form Renderer (Angular)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.9.
+A reusable Angular 20 component that renders complex forms at runtime from JSON schemas. It supports text inputs, textareas, dates, dropdowns, multiselects, checkboxes, validation, helper text, conditional visibility rules, and emits the structured payload on submit.
 
-## Development server
-
-To start a local development server, run:
+## Quick start
 
 ```bash
-ng serve
+npm install
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open `http://localhost:4200` to explore the sample schemas and view emitted payloads in both the UI and browser console.
 
-## Code scaffolding
+## JSON schema format
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+`FormSchema` objects drive the renderer (see `src/app/shared/models/form-schema.model.ts`):
 
-```bash
-ng generate component component-name
+```ts
+{
+  title: 'User Registration',
+  description?: string;
+  submitLabel?: string;
+  fields: Array<{
+    label: string;
+    name: string;
+    type: 'text'|'textarea'|'date'|'dropdown'|'multiselect'|'checkbox';
+    placeholder?: string;
+    helperText?: string;
+    options?: string[];
+    defaultValue?: unknown;
+    required?: boolean;
+    validation?: { pattern?: string; message?: string; required?: boolean };
+    readonly?: boolean;
+    disabled?: boolean;
+    hidden?: boolean;
+    visibleWhen?: { field: string; equals: unknown }; // simple conditional rendering
+  }>
+}
+```
+## Example output
+
+After submitting the User Registration form the preview block shows:
+
+```json
+{
+  "fullName": "Ada Lovelace",
+  "email": "ada@example.com",
+  "dob": "1815-12-10",
+  "gender": "Other",
+  "genderOther": "Mathematician",
+  "hobbies": ["Reading", "Music"],
+  "subscribe": true,
+  "newsletterFrequency": "Monthly",
+  "about": "First programmer."
+}
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+You can adapt or load additional schemas by exporting them from `src/app/schemas` and feeding them to the `app-dynamic-form` component. Optional enhancements like advanced conditional logic, readonly fields, or placeholder overrides can be configured entirely in JSON without touching the component. Continuous styling improvements can be applied via `src/app/components/dynamic-form/dynamic-form.component.scss`. 
