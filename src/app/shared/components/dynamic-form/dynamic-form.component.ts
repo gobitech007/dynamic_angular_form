@@ -31,7 +31,7 @@ export class DynamicFormComponent implements OnChanges {
    * @param index Index of the item.
    * @param item Item being iterated over.
    */
-  trackByField(_: number, field: FormField) {
+  public trackByField(_: number, field: FormField) {
     return field.name;
   }
   
@@ -40,25 +40,20 @@ export class DynamicFormComponent implements OnChanges {
    * @param field 
    * @returns error message | null
    */
-  getErrorMessage(field: FormField): string | null {
+  public getErrorMessage(field: FormField): string | null {
     if (!this.form) {
       return null;
     }
-
     const control = this.form.get(field.name);
-
     if (!control || !control.touched || !control.errors) {
       return null;
     }
-
     if (control.hasError('required')) {
       return  `${field.label} is required.`;
     }
-
     if (control.hasError('pattern')) {
       return field.validation?.message ?? `${field.label} format is invalid.`;
     }
-
     return 'Invalid value';
   }
 
@@ -70,12 +65,10 @@ export class DynamicFormComponent implements OnChanges {
     if (!this.form) {
       return;
     }
-
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-
     const payload = this.form.getRawValue() as PayloadSchema;
     this.submitted.emit(payload);
   }
@@ -84,6 +77,13 @@ export class DynamicFormComponent implements OnChanges {
       this.form.reset();
     }
   }
+
+  public isFieldVisible(field: FormField): boolean {
+    if (!field.visibleWhen || !this.form) {
+      return true;
+    }
+    const control = this.form.get(field.visibleWhen.fieldName);
+    return control?.value === field.visibleWhen.value;
+  }
+
 }
-
-

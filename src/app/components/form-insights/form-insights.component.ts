@@ -1,7 +1,8 @@
 import { CommonModule, JsonPipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, Component, OnInit, computed, signal } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { FormSchema, DynamicFormComponent, PayloadSchema, SchemaService, SchemaList } from '../../shared';
-
+import { LABEL_CONSTANTS } from '../../shared/constants/label.constants';
 
 @Component({
   selector: 'app-form-insights',
@@ -13,6 +14,7 @@ import { FormSchema, DynamicFormComponent, PayloadSchema, SchemaService, SchemaL
 })
 export class FormInsightsComponent implements OnInit {
   
+  readonly labelText = LABEL_CONSTANTS;
   readonly schemaList = signal<SchemaList[]>([]);
   readonly isLoading = signal(true);
   readonly error = signal<string | null>(null);
@@ -22,6 +24,7 @@ export class FormInsightsComponent implements OnInit {
   protected readonly activeSchema = computed<FormSchema | null>(
     () => this.schemaList().at(this.activeSchemaIndex())?.schema ?? null
   );
+  private subscription?: Subscription;
 
   constructor(private readonly schemaService: SchemaService) {}
 
@@ -35,16 +38,16 @@ export class FormInsightsComponent implements OnInit {
   private loadSchemas(): void {
     this.isLoading.set(true);
     this.error.set(null);
-    this.schemaService.getSchemas().subscribe({
+    this.subscription = this.schemaService.getSchemas().subscribe({
       next: (schemas) => {
-        const examples = schemas.map((schema, index) => ({
+        const schemaData = schemas.map((schema, index) => ({
           id: schema.title.toLowerCase().replace(/\s+/g, '-'),
           label: schema.title,
           summary: schema.description || '',
           schema,
         }));
-        console.log('Fetched schemas', examples);
-        this.schemaList.set(examples);
+        console.log('Fetched schemas', schemaData);
+        this.schemaList.set(schemaData);
         this.activeSchemaIndex.set(0);
         this.isLoading.set(false);
       },
@@ -72,4 +75,39 @@ export class FormInsightsComponent implements OnInit {
     this.lastSubmission.set(null);
     this.activeSchemaIndex.set(0);
   }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
+  }
+
+  public renderApi(): void {
+    const apiData:PayloadSchema = {
+      "fullName": "Gobinath S",
+      "email": "gs@gmail.com",
+      "dob": "02-12-2018",
+      "gender": "Male",
+      "hobbies": ["Reading", "Music"],
+      "subscribe": false,
+      "about": "First programmer."
+    }
+    console.log(this.schemaList());
+    this.schemaList.update(schemas => schemas.map( item => item.id === schemas[this.activeSchemaIndex()].id ? {
+      ...item,
+      schema: {
+        ...item.schema,
+        fields: item.schema.fields.map( field => {
+          if (field.name in apiData) {
+            return {
+              ...field,
+              defaultValue: apiData[field.name as keyof PayloadSchema]
+            }
+          }
+          return field;
+        })
+      }
+    } : item ));
+    
+    console.log(this.schemaList());
+  }
+
 }

@@ -16,21 +16,17 @@ export class FormBuilderService {
       );
       return acc;
     }, {});
-
     return this.fb.group(controls);
   }
 
   private getValidators(field: FormField) {
     const validators = [];
-
     if (field.required || field.validation?.required) {
       validators.push(Validators.required);
     }
-
     if (field.validation?.pattern) {
       validators.push(Validators.pattern(field.validation.pattern));
     }
-
     return validators;
   }
 
@@ -38,7 +34,6 @@ export class FormBuilderService {
     if (field.defaultValue !== undefined) {
       return field.defaultValue;
     }
-
     switch (field.type) {
       case 'checkbox':
         return false;

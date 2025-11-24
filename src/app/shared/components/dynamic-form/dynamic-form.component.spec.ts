@@ -50,9 +50,9 @@ describe('DynamicFormComponent', () => {
     component.submitted.subscribe((payload) => submissions.push(payload));
     setSchema();
     component.form?.patchValue({
-      fullName: 'Ada Lovelace',
-      email: 'ada@example.com',
-      dob: '1815-12-10',
+      fullName: 'Gobinath Samuvel',
+      email: 'gs@gs.com',
+      dob: '02-12-2018',
       gender: 'Female',
       hobbies: ['Reading'],
       subscribe: true,
@@ -61,8 +61,8 @@ describe('DynamicFormComponent', () => {
     fixture.detectChanges();
     component.onSubmit();
     expect(submissions.length).toBe(1);
-    expect(submissions[0].fullName).toBe('Ada Lovelace');
-    expect(submissions[0].email).toBe('ada@example.com');
+    expect(submissions[0].fullName).toBe('Gobinath Samuvel');
+    expect(submissions[0].email).toBe('gs@gs.com');
     expect(submissions[0].subscribe).toBe(true);
   });
 

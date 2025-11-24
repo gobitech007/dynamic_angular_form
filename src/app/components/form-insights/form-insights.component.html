@@ -2,7 +2,7 @@
 <section class="workspace">
   @if (isLoading()) {
     <div class="loading-container">
-      <p>Loading schemas...</p>
+      <p>{{labelText.LOADING_SCHEMES_SIGNS}}</p>
     </div>
   } @else if (error()) {
     <div class="error-container">
@@ -10,7 +10,7 @@
     </div>
   } @else {
     <aside class="sidebar">
-      <h2>Schemas List</h2>
+      <h2>{{labelText.SCHEMA_LIST}}</h2>
       <div class="schema-list form-field">
         <select #selectRef id="schemaList" (change)="selectSchema(selectRef.selectedIndex)">
           @for (schema of schemaList(); track schema.id; let i = $index) {
@@ -24,15 +24,18 @@
           }
         </select>
       </div>
+      <div class="apiRendering">
+        <button type="button" class="submit" (click)="renderApi()">Render API</button>
+      </div>
       <div class="submission">
         <div class="submission__header">
-          <h3>Payload</h3>
-          <button type="submit" class="submit reset" (click)="resetForm()">Reset</button>
+          <h3>{{labelText.PAYLOAD}}</h3>
+          <button type="submit" class="submit reset" (click)="resetForm()">{{labelText.RESET_BUTTON}}</button>
         </div>
         @if (lastSubmission(); as payload) {
           <pre class="submission__output">{{ payload | json }}</pre>
         } @else {
-          <p class="muted">Fill out the form and submit to preview the Payload.</p>
+          <p class="muted">{{labelText.FILL_OUT_FORM}}</p>
         }
       </div>
     </aside>

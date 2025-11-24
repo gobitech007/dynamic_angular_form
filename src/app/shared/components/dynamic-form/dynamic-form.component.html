@@ -11,6 +11,7 @@
 
     <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
       @for (field of schema.fields; track trackByField($index, field)) {
+        @if (isFieldVisible(field)) {
           <div class="form-field" [class.invalid]="getErrorMessage(field)">
             @if (field?.labelVisible ?? true) {
               <label [attr.for]="field.name">
@@ -20,7 +21,6 @@
                 }
               </label>
             }
-
             @switch (field.type) {
               @case ('text') {
                 <input
@@ -37,7 +37,7 @@
                   rows="4"
                   [formControlName]="field.name"
                   [placeholder]="field.placeholder ?? ''"
-                  [readonly]="field.readonly ?? null"  
+                  [readonly]="field.readonly ?? null" 
                 ></textarea>
               }
               @case ('date') {
@@ -73,15 +73,14 @@
                 </label>
               }
             }
-
             @if (field.helperText) {
               <small class="helper">{{ field.helperText }}</small>
             }
-
             @if (getErrorMessage(field); as error) {
               <small class="error">{{ error }}</small>
             }
-          </div>        
+          </div>  
+        }      
       }
       <div class="submitWrapper">
         <button class="submit" type="submit">
@@ -94,5 +93,3 @@
 } @else {
   <p class="empty-state">No schema selected.</p>
 }
-
-

@@ -19,7 +19,7 @@ export const userRegistrationSchema: FormSchema = {
       placeholder: 'gsd@sample.com',
       required: true,
       validation: {
-        pattern: '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$',
+        pattern: '^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
         message: 'Enter a valid email address.',
       },
     },
@@ -79,7 +79,7 @@ export const employeeRegistrationSchema: FormSchema = {
       placeholder: 'ddsg@sample.com',
       required: true,
       validation: {
-        pattern: '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$',
+        pattern: '^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
         message: 'Enter a valid email address.',
       },
     },
@@ -110,7 +110,8 @@ export const employeeRegistrationSchema: FormSchema = {
       name: 'subscribe',
       type: 'checkbox',
       defaultValue: true,
-      labelVisible: false,      
+      labelVisible: false,
+      visibleWhen: { fieldName: 'subscribe', value: true }      
     },
     {
       label: 'About Yourself',

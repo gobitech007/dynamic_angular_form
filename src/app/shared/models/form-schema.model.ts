@@ -20,6 +20,7 @@ export interface FormField {
   disabled?: boolean;
   hidden?: boolean;
   labelVisible?: boolean;
+  visibleWhen?: { fieldName: 'subscribe', value: true }
 }
 
 export interface FormSchema {
